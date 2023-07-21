@@ -8,20 +8,20 @@ node {
         stage('Test') {
             sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
                 }
-        }
         post {
               always {
                   junit 'test-reports/results.xml'
             }
         }
+    }
     docker.image('cdrx/pyinstaller-linux:python2') {
         stage('Deliver') {
                 sh 'pyinstaller --onefile sources/add2vals.py'
         }
-    }
-    post {
-        success {
+        post {
+            success {
                 archiveArtifacts 'dist/add2vals'
             }
-        }
+        }    
     }
+}
